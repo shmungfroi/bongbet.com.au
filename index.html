@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BongBet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Karla:wght@400;600;800&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a sun-bleached 70s surf-shop sticker world. Markets on the left like a chalk board, bet slip on the right like a servo receipt. Single theme by choice. */
+:root{
+  --sand:#f3e4c6;
+  --paper:#fbf3e2;
+  --ink:#2a1b12;
+  --rust:#c9541f;
+  --mustard:#e2a72e;
+  --teal:#2f7f7a;
+  --brown:#6e3a1c;
+  --muted:#7b6553;
+  --win:#3d7a2e;
+  --lose:#a3341c;
+  --display:"Shrikhand", "Cooper Black", Georgia, serif;
+  --body:"Karla", "Helvetica Neue", Arial, sans-serif;
+  --mono:"Courier Prime", "Courier New", monospace;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--sand);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;
+  background-image:radial-gradient(rgba(110,58,28,.06) 1px, transparent 1px);background-size:5px 5px;}
+a{color:var(--teal)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+h1,h2,h3{text-wrap:balance;margin:0}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  padding:10px 20px;background:var(--ink);color:var(--paper)}
+.logo{font-family:var(--display);font-size:26px;color:var(--mustard);letter-spacing:.5px;text-decoration:none}
+.logo span{color:var(--rust)}
+.wallet{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:15px}
+.wallet b{color:var(--mustard);font-size:19px;font-variant-numeric:tabular-nums}
+.chip{border:1.5px solid var(--mustard);color:var(--mustard);background:none;border-radius:999px;padding:3px 12px;font-size:13px}
+.chip:hover{background:var(--mustard);color:var(--ink)}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:var(--paper);border-bottom:4px solid var(--ink)}
+.stripes{position:absolute;inset:auto 0 0 0;height:64px;background:
+  linear-gradient(var(--mustard) 0 33%, var(--rust) 33% 66%, var(--brown) 66%);opacity:.95}
+.hero-in{position:relative;max-width:1180px;margin:0 auto;padding:34px 20px 90px;display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center}
+.sun{position:absolute;right:8%;top:24px;width:240px;height:240px;border-radius:50%;
+  background:repeating-linear-gradient(180deg,var(--mustard) 0 18px,transparent 18px 26px);opacity:.55}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(54px,9vw,104px);line-height:.95;color:var(--rust);
+  text-shadow:4px 4px 0 var(--ink)}
+.hero h1 small{display:block;font-size:.32em;color:var(--teal);text-shadow:2px 2px 0 var(--ink);margin-top:8px}
+.tag{font-size:20px;max-width:34ch;margin:16px 0 20px;font-weight:600}
+.cta{display:inline-block;font-family:var(--display);font-size:22px;background:var(--teal);color:var(--paper);border:3px solid var(--ink);
+  border-radius:14px;padding:10px 22px;box-shadow:4px 4px 0 var(--ink);text-decoration:none}
+.cta:hover{transform:translate(-1px,-1px);box-shadow:6px 6px 0 var(--ink)}
+.van{position:relative;width:100%;max-width:440px;justify-self:center}
+.smoke{position:absolute;width:40px;height:40px;border-radius:50%;background:rgba(160,150,140,.45);filter:blur(4px);left:14%;top:30%;
+  animation:puff 5s ease-out infinite}
+.smoke:nth-child(2){animation-delay:1.6s;left:18%}
+.smoke:nth-child(3){animation-delay:3.2s;left:12%}
+@keyframes puff{0%{transform:translate(0,0) scale(.4);opacity:.8}100%{transform:translate(-60px,-140px) scale(2.6);opacity:0}}
+
+/* ticker */
+.ticker{background:var(--mustard);border-bottom:3px solid var(--ink);overflow:hidden;white-space:nowrap;font-weight:800;font-size:15px}
+.ticker div{display:inline-block;padding:7px 0;animation:tick 60s linear infinite}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* main */
+main{max-width:1180px;margin:0 auto;padding:28px 20px 40px;display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
+.section-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.section-h h2{font-family:var(--display);font-weight:400;font-size:34px;color:var(--brown)}
+.section-h p{margin:0;color:var(--muted);font-size:15px}
+.markets{display:grid;gap:16px}
+.mkt{background:var(--paper);border:3px solid var(--ink);border-radius:16px;padding:16px 18px;box-shadow:5px 5px 0 rgba(42,27,18,.85)}
+.mkt-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.mkt h3{font-size:21px;font-weight:800;line-height:1.25}
+.mkt .sub{color:var(--muted);font-size:14.5px;margin:3px 0 12px}
+.unit{font-family:var(--mono);font-size:12px;background:var(--sand);border:1.5px dashed var(--brown);border-radius:6px;padding:2px 8px;white-space:nowrap}
+.outs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.out{display:flex;justify-content:space-between;align-items:center;gap:8px;text-align:left;background:var(--sand);border:2px solid var(--ink);
+  border-radius:10px;padding:8px 10px;font-size:14.5px;line-height:1.25;color:var(--ink)}
+.out:hover{background:#f6d79a}
+.out .o{font-family:var(--mono);font-weight:700;font-size:16px;background:var(--ink);color:var(--mustard);border-radius:6px;padding:1px 7px;font-variant-numeric:tabular-nums}
+.out.sel{background:var(--teal);color:var(--paper)}
+.out.sel .o{background:var(--paper);color:var(--teal)}
+.mkt .last{margin-top:10px;font-size:13.5px;color:var(--muted);font-style:italic}
+
+/* slip */
+aside{position:sticky;top:70px;display:grid;gap:16px}
+.slip{background:#fffdf6;border:2px solid var(--ink);font-family:var(--mono);padding:16px 16px 18px;position:relative;
+  -webkit-mask: radial-gradient(circle 7px at 50% 100%, transparent 98%, #000) 0 0/16px 100% repeat-x;
+          mask: radial-gradient(circle 7px at 50% 100%, transparent 98%, #000) 0 0/16px 100% repeat-x;
+  padding-bottom:26px}
+.slip h2{font-family:var(--display);font-weight:400;font-size:26px;color:var(--rust);text-align:center}
+.slip .hdr{text-align:center;font-size:12px;color:var(--muted);border-bottom:1.5px dashed var(--ink);padding-bottom:8px;margin-bottom:10px}
+.empty{font-size:14px;color:var(--muted);text-align:center;padding:16px 0}
+.line{border-bottom:1.5px dashed #c8b79b;padding:8px 0;display:grid;gap:6px;font-size:13.5px}
+.line .q{color:var(--muted)}
+.line .pick{font-weight:700;font-size:14.5px}
+.line .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.line label{font-size:12px}
+.line input{width:84px;font:inherit;font-size:15px;border:2px solid var(--ink);border-radius:6px;padding:3px 6px;background:var(--paper)}
+.x{background:none;border:none;color:var(--lose);font-size:13px;text-decoration:underline}
+.tot{display:flex;justify-content:space-between;font-size:14px;margin-top:10px;font-variant-numeric:tabular-nums}
+.btn{width:100%;margin-top:12px;font-family:var(--display);font-size:20px;border:3px solid var(--ink);border-radius:12px;padding:9px;
+  background:var(--rust);color:var(--paper);box-shadow:3px 3px 0 var(--ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.alt{background:var(--teal)}
+.msg{font-size:13px;margin-top:8px;min-height:1.2em;color:var(--brown)}
+.open{background:var(--paper);border:3px solid var(--ink);border-radius:16px;padding:14px 16px;font-size:14px}
+.open h3{font-family:var(--display);font-weight:400;font-size:22px;color:var(--brown);margin-bottom:6px}
+.open ul{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.open li{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dotted #c8b79b;padding-bottom:5px}
+.open li span:last-child{font-family:var(--mono);white-space:nowrap}
+
+/* results */
+.results{max-width:1180px;margin:0 auto;padding:0 20px 40px}
+.feed{display:grid;gap:12px}
+.ruling{background:var(--paper);border:3px solid var(--ink);border-left-width:12px;border-radius:12px;padding:12px 16px}
+.ruling.w{border-left-color:var(--win)}
+.ruling.l{border-left-color:var(--lose)}
+.ruling.v{border-left-color:var(--mustard)}
+.ruling .q{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:800}
+.ruling .r{font-size:18px;font-weight:800;margin:2px 0}
+.ruling blockquote{margin:4px 0 6px;font-style:italic}
+.ruling .pay{font-family:var(--mono);font-size:14px}
+
+/* lads */
+.lads{background:var(--teal);color:var(--paper);border-top:4px solid var(--ink);border-bottom:4px solid var(--ink)}
+.lads-in{max-width:1180px;margin:0 auto;padding:34px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.lads h2{font-family:var(--display);font-weight:400;font-size:38px;color:var(--mustard);grid-column:1/-1}
+.lad{background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:16px;padding:16px;box-shadow:5px 5px 0 var(--ink)}
+.lad h3{font-family:var(--display);font-weight:400;font-size:28px;color:var(--rust)}
+.lad .role{font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:8px}
+.lad p{margin:6px 0;font-size:15.5px}
+.licence{font-family:var(--mono);background:#fffdf6;transform:rotate(-1.5deg)}
+.licence h3{font-family:var(--mono);font-weight:700;font-size:16px;color:var(--ink);text-align:center;border-bottom:1.5px dashed var(--ink);padding-bottom:6px}
+.licence dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:13px;margin:10px 0}
+.licence dt{color:var(--muted)}
+.licence dd{margin:0}
+.stamp{display:inline-block;border:3px solid var(--lose);color:var(--lose);font-weight:700;padding:2px 8px;transform:rotate(-6deg);margin-top:6px}
+
+footer{background:var(--ink);color:var(--paper);padding:28px 20px 40px}
+.foot{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.3fr 1fr;gap:24px;font-size:14.5px}
+.foot h3{font-family:var(--display);font-weight:400;font-size:24px;color:var(--mustard)}
+.foot a{color:var(--mustard)}
+.foot p{margin:6px 0;max-width:60ch}
+.help{border:2px solid var(--mustard);border-radius:12px;padding:12px 14px}
+
+@media (max-width:900px){
+  main{grid-template-columns:1fr}
+  aside{position:static}
+  .hero-in{grid-template-columns:1fr}
+  .lads-in{grid-template-columns:1fr}
+  .foot{grid-template-columns:1fr}
+  .sun{width:160px;height:160px}
+}
+@media (prefers-reduced-motion:reduce){
+  .smoke,.ticker div{animation:none}
+  .smoke{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="logo" href="#markets">Bong<span>Bet</span>.com.au</a>
+  <div class="wallet">
+    <span>Bong Bucks:</span><b id="bal">420</b>
+    <button class="chip" id="couch" type="button">Check the couch</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="sun" aria-hidden="true"></div>
+  <div class="hero-in">
+    <div>
+      <h1>BongBet<small>Australia's most relaxed bookie</small></h1>
+      <p class="tag">Odds set by vibes. Settled eventually. Run out of a Kombi somewhere past Nimbin by two blokes who've never once been right.</p>
+      <a class="cta" href="#markets">Place a bet, maaate</a>
+    </div>
+    <div class="van" aria-hidden="true">
+      <div class="smoke"></div><div class="smoke"></div><div class="smoke"></div>
+      <svg viewBox="0 0 420 250" width="100%" role="img">
+        <ellipse cx="210" cy="232" rx="180" ry="10" fill="#2a1b12" opacity=".18"/>
+        <path d="M40 200 L40 95 Q40 50 95 45 L330 45 Q378 48 385 100 L392 200 Z" fill="#2f7f7a" stroke="#2a1b12" stroke-width="5"/>
+        <path d="M40 135 L392 135 L392 200 L40 200 Z" fill="#f3e4c6" stroke="#2a1b12" stroke-width="5"/>
+        <path d="M300 135 L392 135 L392 150 Q346 160 300 135 Z" fill="#2f7f7a"/>
+        <circle cx="352" cy="168" r="18" fill="#fbf3e2" stroke="#2a1b12" stroke-width="5"/>
+        <path d="M352 152 L352 184 M352 168 L340 180 M352 168 L364 180" stroke="#2a1b12" stroke-width="4"/>
+        <rect x="70" y="62" width="58" height="48" rx="10" fill="#fbf3e2" stroke="#2a1b12" stroke-width="5"/>
+        <rect x="142" y="62" width="58" height="48" rx="10" fill="#fbf3e2" stroke="#2a1b12" stroke-width="5"/>
+        <rect x="214" y="62" width="58" height="48" rx="10" fill="#fbf3e2" stroke="#2a1b12" stroke-width="5"/>
+        <path d="M290 62 L350 62 Q372 66 374 110 L290 110 Z" fill="#fbf3e2" stroke="#2a1b12" stroke-width="5"/>
+        <rect x="150" y="18" width="200" height="22" rx="4" fill="#e2a72e" stroke="#2a1b12" stroke-width="4"/>
+        <path d="M160 18 L340 18" stroke="#c9541f" stroke-width="4"/>
+        <rect x="60" y="150" width="200" height="34" rx="6" fill="#c9541f" stroke="#2a1b12" stroke-width="4"/>
+        <text x="160" y="174" text-anchor="middle" font-family="Shrikhand, Georgia, serif" font-size="20" fill="#fbf3e2">BongBet</text>
+        <circle cx="105" cy="205" r="28" fill="#2a1b12"/><circle cx="105" cy="205" r="11" fill="#e2a72e"/>
+        <circle cx="320" cy="205" r="28" fill="#2a1b12"/><circle cx="320" cy="205" r="11" fill="#e2a72e"/>
+      </svg>
+    </div>
+  </div>
+  <div class="stripes" aria-hidden="true"></div>
+</section>
+
+<div class="ticker" aria-hidden="true"><div id="tick"></div></div>
+
+<main>
+  <section id="markets" aria-labelledby="mh">
+    <div class="section-h">
+      <h2 id="mh">Today's Markets</h2>
+      <p>Tap a price to chuck it on the slip. One pick per market. Spud will remember. Probably.</p>
+    </div>
+    <div class="markets" id="mk"></div>
+  </section>
+
+  <aside>
+    <div class="slip" aria-labelledby="sh">
+      <h2 id="sh">Bet Slip</h2>
+      <div class="hdr">KOMBI #4:20 · TERMINAL: SPUD'S PHONE (CRACKED)</div>
+      <div id="lines"></div>
+      <div class="tot"><span>Total stake</span><span id="tst">0</span></div>
+      <div class="tot"><span>Potential return</span><span id="tret">0</span></div>
+      <button class="btn" id="place" type="button" disabled>Lock it in</button>
+      <div class="msg" id="smsg" role="status"></div>
+    </div>
+    <div class="open">
+      <h3>Open bets</h3>
+      <ul id="openl"></ul>
+      <button class="btn alt" id="settle" type="button" disabled>Wake Spud to settle</button>
+    </div>
+  </aside>
+</main>
+
+<section class="results" aria-labelledby="rh">
+  <div class="section-h">
+    <h2 id="rh">Spud's Rulings</h2>
+    <p>Final. Binding. Written on the back of a Rizla packet.</p>
+  </div>
+  <div class="feed" id="feed"></div>
+</section>
+
+<section class="lads">
+  <div class="lads-in">
+    <h2>Meet the Lads</h2>
+    <div class="lad">
+      <h3>Dazza</h3>
+      <div class="role">HEAD BOOKMAKER · ODDS COMPILER · FIRE TWIRLER (RETIRED, EYEBROWS)</div>
+      <p>Sets every price by holding his thumb up to the market and squinting. Has called "pitted" on 1,400 consecutive flat days.</p>
+      <p>Hasn't worn closed shoes since the Sydney Olympics. Claims he invented the bucket hat.</p>
+    </div>
+    <div class="lad">
+      <h3>Spud</h3>
+      <div class="role">HEAD OF RISK · SETTLEMENTS · KEEPER OF THE LIGHTER</div>
+      <p>Settles every bet personally, usually about forty minutes after he's forgotten what the bet was.</p>
+      <p>Once spent a whole arvo convinced the moon was a big lamp the council put up. Still not fully ruled out.</p>
+    </div>
+    <div class="lad licence">
+      <h3>BOOKMAKER LICENCE</h3>
+      <dl>
+        <dt>Issued by</dt><dd>Servo, Lismore Rd</dd>
+        <dt>Item</dt><dd>2 x Chiko Roll, 1 x lighter</dd>
+        <dt>Total</dt><dd>$14.20</dd>
+        <dt>Valid until</dt><dd>Ink fades</dd>
+        <dt>Status</dt><dd>Laminated at the library</dd>
+      </dl>
+      <span class="stamp">TOTALLY LEGIT</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot">
+    <div>
+      <h3>Gamble responsibly, or just have a lie down</h3>
+      <p>BongBet is a parody. No real money changes hands, nothing can be deposited or withdrawn, and Bong Bucks are worth exactly nothing, same as Dazza's opinions. Strictly for adults with a sense of humour.</p>
+      <p>Odds are set by vibes and are not a reflection of anything, including reality.</p>
+    </div>
+    <div class="help">
+      <p><strong>Real talk for a sec.</strong> If gambling stops being a laugh for you or someone you know, free and confidential help is available 24/7.</p>
+      <p><a href="https://www.gamblinghelponline.org.au">Gambling Help Online</a> · National Gambling Helpline 1800 858 858</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const MARKETS = [
+  {id:"shark", q:"What does shark actually taste like?", sub:"Dazza had flake at the Byron chippy and has opinions.", unit:"Measured in: vibes",
+   outs:[["Chicken",3.50],["Fish, obviously",1.80],["Regret",7.00],["Depends on the shark",2.20],["A really big flathead",4.20]]},
+  {id:"moon", q:"How big is the moon tonight?", sub:"Measured by Spud holding up a pizza at arm's length from the van roof.", unit:"Measured in: pizzas",
+   outs:[["About one pizza",2.10],["Bigger than last night",1.90],["Mate, it's massive",1.50],["It's following us",6.90]]},
+  {id:"bowls", q:"Barefoot bowls: does Dazza's bowl get anywhere near the jack?", sub:"Sunday session at the club. Two jugs deep before the first end.", unit:"Measured in: metres off",
+   outs:[["Kisses the jack",8.00],["Straight in the ditch",1.40],["Wrong rink entirely",4.20],["Celebrates early, spills schooner",2.60]]},
+  {id:"tea", q:"How strong is Spud's cuppa?", sub:"He put the bag in, then remembered he'd left the cricket on.", unit:"Measured in: minutes steeped",
+   outs:[["Dishwater",1.70],["Builder's",3.00],["Bag left in since Tuesday",5.50],["Forgot to add water",9.00]]},
+  {id:"waves", q:"How pitted are the waves at the point?", sub:"Live report from Dazza, who is in the van with the windows up.", unit:"Measured in: barrels",
+   outs:[["Flat as a tack",2.00],["Fun little runners",2.50],["Pumping, full keg",6.00],["Says 'pitted', never paddles out",1.30]]},
+  {id:"tan", q:"Depth of Dazza's singlet tan line", sub:"Two-tone since 2004. Spud's bringing a ruler, or a stick.", unit:"Measured in: shades of brown",
+   outs:[["Light dusting",3.00],["Visible from the car park",2.00],["Choc-dipped cone",2.40],["He's basically a footy jumper now",5.00]]},
+  {id:"head", q:"Margin of head on Dazza's schooner", sub:"Pub pour, judged by eye before he gets his lips on it.", unit:"Measured in: fingers",
+   outs:[["One finger, perfect",2.40],["Mostly froth",3.20],["Flat as",1.90],["Drunk before measurement",1.20]]},
+  {id:"doobs", q:"How many doobies by noon?", sub:"Combined total, the lads. Counted on Spud's fingers, so cap of ten-ish.", unit:"Measured in: doobs",
+   outs:[["0 to 2 (lightweights)",12.00],["3 to 5",1.80],["6 to 9",2.50],["Lost count at the servo",1.50]]},
+];
+
+const EXCUSES = [
+  "I looked at it for ages, eh. Then I looked at the clouds for a bit longer. Ruling stands.",
+  "Dazza tried to argue so I gave him a Tim Tam and he stopped.",
+  "Wrote it on my hand. Some of it washed off in the surf but this bit's clear.",
+  "This was decided by a committee of me and a magpie.",
+  "Honestly mate, I'd swear on Nan's kombucha.",
+  "Had to sit down for this one. Then lie down. Then I had a little nap. Then I decided.",
+  "Checked it three times. Got three different answers. Went with the one that sounded nice.",
+  "The vibes were unanimous, apart from Dazza, who's not a vibe.",
+  "Me cousin reckons this is right and he's done a TAFE course.",
+  "Couldn't find me glasses so I went off the general shape of things.",
+  "It came to me in the shower. Well, under the hose behind the van.",
+  "Look, nobody's perfect, but I'm pretty close on a Tuesday."
+];
+const VOIDS = [
+  "Sorry, what was the question again? Bet's off, you get your Bucks back. No dramas.",
+  "Spud got distracted by a really good stick. Market voided, stakes refunded."
+];
+const TICKS = [
+  "DAZZA'S TIP: The moon is massive tonight, put the house on it",
+  "LATE MAIL: Spud's tea bag spotted in the mug since Sunday",
+  "SCRATCHING: Dazza's thongs, location unknown",
+  "SURF CAM: Down. Dazza is the surf cam",
+  "PROTEST LODGED: Magpie disputes last night's shark ruling",
+  "BOWLS: Club confirms Dazza still banned from Rink 3",
+  "SERVO REPORT: Chiko Rolls back in stock, markets steady"
+];
+
+const START = 420;
+let st = {bal:START, slip:{}, open:[], feed:[], n:1};
+try{ const s = JSON.parse(localStorage.getItem("bongbet")); if(s && typeof s.bal==="number") st = Object.assign(st, s, {slip:{}}); }catch(e){}
+function save(){ try{ localStorage.setItem("bongbet", JSON.stringify({bal:st.bal, open:st.open, feed:st.feed, n:st.n})); }catch(e){} }
+
+const $ = id => document.getElementById(id);
+const fmt = n => (Math.round(n*100)/100).toLocaleString("en-AU",{minimumFractionDigits:0,maximumFractionDigits:2});
+const mById = id => MARKETS.find(m=>m.id===id);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function renderMarkets(){
+  $("mk").innerHTML = MARKETS.map(m=>{
+    const last = st.feed.find(f=>f.mid===m.id);
+    return `<article class="mkt">
+      <div class="mkt-top"><h3>${esc(m.q)}</h3><span class="unit">${esc(m.unit)}</span></div>
+      <p class="sub">${esc(m.sub)}</p>
+      <div class="outs">${m.outs.map((o,i)=>`<button type="button" class="out ${st.slip[m.id]&&st.slip[m.id].oi===i?"sel":""}" data-m="${m.id}" data-i="${i}" aria-pressed="${st.slip[m.id]&&st.slip[m.id].oi===i}"><span>${esc(o[0])}</span><span class="o">$${o[1].toFixed(2)}</span></button>`).join("")}</div>
+      ${last?`<div class="last">Last result: ${esc(last.result)}</div>`:""}
+    </article>`;
+  }).join("");
+}
+
+function renderSlip(){
+  const keys = Object.keys(st.slip);
+  if(!keys.length){ $("lines").innerHTML = `<div class="empty">Nothing on the slip.<br>Tap a price, legend.</div>`; }
+  else $("lines").innerHTML = keys.map(k=>{
+    const m = mById(k), s = st.slip[k], o = m.outs[s.oi];
+    return `<div class="line">
+      <div class="q">${esc(m.q)}</div>
+      <div class="row"><span class="pick">${esc(o[0])}</span><span>@ $${o[1].toFixed(2)}</span></div>
+      <div class="row"><label for="stk-${k}">Stake (Bong Bucks)</label><input id="stk-${k}" type="number" min="1" step="1" inputmode="numeric" value="${s.stake}" data-k="${k}"></div>
+      <div class="row"><span>Returns ${fmt(s.stake*o[1])}</span><button class="x" type="button" data-rm="${k}">Bin it</button></div>
+    </div>`;
+  }).join("");
+  totals();
+}
+function totals(){
+  let t=0,r=0;
+  for(const k in st.slip){ const s=st.slip[k]; t+=s.stake; r+=s.stake*mById(k).outs[s.oi][1]; }
+  $("tst").textContent = fmt(t); $("tret").textContent = fmt(r);
+  $("place").disabled = !Object.keys(st.slip).length;
+}
+function renderOpen(){
+  $("openl").innerHTML = st.open.length ? st.open.map(b=>{
+    const m=mById(b.mid);
+    return `<li><span>${esc(m.outs[b.oi][0])}</span><span>${fmt(b.stake)} @ $${b.odds.toFixed(2)}</span></li>`;
+  }).join("") : `<li><span>No open bets. Spud is resting his eyes.</span><span></span></li>`;
+  $("settle").disabled = !st.open.length;
+}
+function renderFeed(){
+  $("feed").innerHTML = st.feed.length ? st.feed.slice(0,20).map(f=>`
+    <div class="ruling ${f.cls}">
+      <div class="q">${esc(f.q)}</div>
+      <div class="r">${esc(f.result)}</div>
+      <blockquote>"${esc(f.quote)}" — Spud</blockquote>
+      ${f.pay?`<div class="pay">${esc(f.pay)}</div>`:""}
+    </div>`).join("") :
+    `<div class="ruling v"><div class="q">Nothing settled yet</div><div class="r">Place a bet, then wake Spud.</div><blockquote>"Five more minutes." — Spud</blockquote></div>`;
+}
+function renderBal(){ $("bal").textContent = fmt(st.bal); }
+function all(){ renderMarkets(); renderSlip(); renderOpen(); renderFeed(); renderBal(); }
+
+$("mk").addEventListener("click", e=>{
+  const b = e.target.closest(".out"); if(!b) return;
+  const m=b.dataset.m, i=+b.dataset.i;
+  if(st.slip[m] && st.slip[m].oi===i) delete st.slip[m];
+  else st.slip[m] = {oi:i, stake: st.slip[m]?st.slip[m].stake:20};
+  $("smsg").textContent="";
+  renderMarkets(); renderSlip();
+});
+$("lines").addEventListener("input", e=>{
+  const k = e.target.dataset.k; if(!k) return;
+  const v = Math.max(0, Math.floor(+e.target.value||0));
+  st.slip[k].stake = v; totals();
+  const row = e.target.closest(".line").querySelectorAll(".row")[2].firstElementChild;
+  row.textContent = "Returns " + fmt(v*mById(k).outs[st.slip[k].oi][1]);
+});
+$("lines").addEventListener("click", e=>{
+  const k = e.target.dataset.rm; if(!k) return;
+  delete st.slip[k]; renderMarkets(); renderSlip();
+});
+$("place").addEventListener("click", ()=>{
+  const keys = Object.keys(st.slip);
+  const total = keys.reduce((a,k)=>a+st.slip[k].stake,0);
+  if(keys.some(k=>st.slip[k].stake<1)){ $("smsg").textContent = "One of them's got no stake, mate. Minimum 1 Buck."; return; }
+  if(total>st.bal){ $("smsg").textContent = `You've only got ${fmt(st.bal)} Bucks. Check the couch.`; return; }
+  keys.forEach(k=>{ const s=st.slip[k]; st.open.push({id:st.n++, mid:k, oi:s.oi, stake:s.stake, odds:mById(k).outs[s.oi][1]}); });
+  st.bal -= total; st.slip = {};
+  $("smsg").textContent = "Locked in. Dazza's written it on a coaster.";
+  save(); all();
+});
+function pick(m){
+  const w = m.outs.map(o=>1/o[1]); const sum = w.reduce((a,b)=>a+b,0);
+  let r = Math.random()*sum;
+  for(let i=0;i<w.length;i++){ r-=w[i]; if(r<=0) return i; }
+  return w.length-1;
+}
+const rand = a => a[Math.floor(Math.random()*a.length)];
+$("settle").addEventListener("click", ()=>{
+  const mids = [...new Set(st.open.map(b=>b.mid))];
+  const fresh = [];
+  mids.forEach(mid=>{
+    const m = mById(mid), bets = st.open.filter(b=>b.mid===mid);
+    const staked = bets.reduce((a,b)=>a+b.stake,0);
+    if(Math.random()<0.07){
+      st.bal += staked;
+      fresh.push({mid, q:m.q, result:"Market voided", quote:rand(VOIDS), cls:"v", pay:`Refunded ${fmt(staked)} Bong Bucks`});
+      return;
+    }
+    const w = pick(m);
+    let won = 0;
+    bets.forEach(b=>{ if(b.oi===w) won += b.stake*b.odds; });
+    st.bal += won;
+    fresh.push({mid, q:m.q, result:`Spud has ruled: ${m.outs[w][0]}`, quote:rand(EXCUSES),
+      cls: won>0?"w":"l", pay: won>0?`Winner. Paid ${fmt(won)} Bong Bucks`:`Lost ${fmt(staked)} Bong Bucks. Dazza is buying a pie with it`});
+  });
+  st.open = [];
+  st.feed = fresh.concat(st.feed).slice(0,30);
+  save(); all();
+  document.getElementById("rh").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+});
+$("couch").addEventListener("click", ()=>{
+  if(st.bal >= 50){ $("smsg").textContent = "Spud checked. Just a lighter and half a Twistie. You've still got Bucks, legend."; return; }
+  const found = 100 + Math.floor(Math.random()*321);
+  st.bal += found;
+  $("smsg").textContent = `Spud found ${found} Bong Bucks down the back of the couch. Also a sock.`;
+  save(); renderBal();
+});
+
+const t = TICKS.join("   ★   ") + "   ★   ";
+$("tick").textContent = t + t;
+all();
+</script>
+</body>
+</html>
