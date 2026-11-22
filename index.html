@@ -238,11 +238,11 @@ footer{background:var(--ink);color:var(--paper);padding:28px 20px 40px}
     <p class="ann">📣 Announcement</p>
     <h2 class="ann-h" id="fxh">A Jack Off<small>featuring</small></h2>
     <ul class="trio">
-      <li><span class="nm">Bruce</span><span class="od">$12.00</span><span class="tg">The roughie</span></li>
-      <li><span class="nm">The Dogg</span><span class="od">$2.00</span><span class="tg">Co-favourite</span></li>
-      <li><span class="nm">The Wookie</span><span class="od">$2.10</span><span class="tg">Co-favourite</span></li>
+      <li><span class="nm">Bruce</span><span class="od">$1.90</span><span class="tg">Favourite</span></li>
+      <li><span class="nm">The Dogg</span><span class="od">$5.00</span><span class="tg">Full of excuses</span></li>
+      <li><span class="nm">The Wookie</span><span class="od">$3.50</span><span class="tg">The danger</span></li>
     </ul>
-    <p class="fx-blurb">Closest bowl to the jack takes it. Dazza's on the scoreboard, Spud's holding the tape measure upside down. Bruce is a long shot. The Dogg and The Wookie are near enough dead even, and they both know it.</p>
+    <p class="fx-blurb">Closest bowl to the jack takes it. Dazza's on the scoreboard, Spud's holding the tape measure upside down. Bruce is the hot favourite. The Wookie's a chance. The Dogg has already started explaining why it's not his fault.</p>
     <div class="fx-mk" id="fxmk"></div>
   </div>
 </section>
@@ -328,13 +328,13 @@ footer{background:var(--ink);color:var(--paper);padding:28px 20px 40px}
 <script>
 const MARKETS = [
   {id:"fx-jack", f:1, q:"The Jack Off: who finishes closest to the jack?", sub:"One end, one bowl each. Measured by Spud, who has never once read a tape measure the right way up.", unit:"Measured in: centimetres off",
-   outs:[["Bruce",12.00],["The Dogg",2.00],["The Wookie",2.10]]},
+   outs:[["Bruce",1.90],["The Dogg",5.00],["The Wookie",3.50]]},
   {id:"fx-touch", f:1, q:"Does anyone actually touch the jack?", sub:"A toucher, for the uninitiated. Dazza swears he's seen one before.", unit:"Measured in: kisses",
-   outs:[["Nobody gets near it",1.60],["One toucher",3.50],["Bruce somehow",15.00],["Someone knocks it in the ditch",4.00]]},
-  {id:"fx-margin", f:1, q:"Winning margin between The Dogg and The Wookie", sub:"If it's those two, Spud reckons it'll come down to a cigarette paper.", unit:"Measured in: Rizla papers",
-   outs:[["Under one Rizla",2.80],["A schooner coaster",2.40],["A full bowl's width",3.60],["They dispute it till close",3.00]]},
-  {id:"fx-bruce", f:1, q:"Bruce's excuse if he loses", sub:"Long odds on the win, short odds on the excuse.", unit:"Measured in: excuses",
-   outs:[["The green's crooked",1.80],["Sun in his eyes",2.50],["Bowl's got a dodgy bias",2.20],["Says he wasn't trying",3.40]]},
+   outs:[["Nobody gets near it",1.60],["One toucher",3.50],["Bruce, obviously",3.00],["Someone knocks it in the ditch",4.00]]},
+  {id:"fx-margin", f:1, q:"Bruce's winning margin", sub:"If he gets it, Spud reckons it'll come down to a cigarette paper.", unit:"Measured in: Rizla papers",
+   outs:[["Under one Rizla",2.80],["A schooner coaster",2.40],["A full bowl's width",3.60],["The Dogg disputes it till close",3.00]]},
+  {id:"fx-bruce", f:1, q:"The Dogg's excuse when he loses", sub:"Long odds on the win, very short odds on the excuse. He's got a list.", unit:"Measured in: excuses",
+   outs:[["The green's crooked",1.80],["Sun in his eyes",2.50],["Bowl's got a dodgy bias",2.20],["Says he wasn't trying",3.40],["Blames The Wookie's shedding",4.50]]},
   {id:"shark", q:"What does shark actually taste like?", sub:"Dazza had flake at the Byron chippy and has opinions.", unit:"Measured in: vibes",
    outs:[["Chicken",3.50],["Fish, obviously",1.80],["Regret",7.00],["Depends on the shark",2.20],["A really big flathead",4.20]]},
   {id:"moon", q:"How big is the moon tonight?", sub:"Measured by Spud holding up a pizza at arm's length from the van roof.", unit:"Measured in: pizzas",
@@ -372,8 +372,8 @@ const VOIDS = [
   "Spud got distracted by a really good stick. Market voided, stakes refunded."
 ];
 const TICKS = [
-  "TODAY: THE JACK OFF. Bruce $12, The Dogg $2, The Wookie $2.10",
-  "LATE MAIL: The Wookie seen polishing his bowl in the car park",
+  "TODAY: THE JACK OFF. Bruce $1.90, The Wookie $3.50, The Dogg $5",
+  "LATE MAIL: The Dogg already blaming the green and he hasn't bowled yet",
   "DAZZA'S TIP: The moon is massive tonight, put the house on it",
   "LATE MAIL: Spud's tea bag spotted in the mug since Sunday",
   "SCRATCHING: Dazza's thongs, location unknown",
