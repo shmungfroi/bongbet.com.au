@@ -76,15 +76,17 @@ h1,h2,h3{text-wrap:balance;margin:0}
 .fx-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 18px;background:var(--rust);
   font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 .fx-top .live{background:var(--ink);color:var(--mustard);border-radius:999px;padding:2px 10px}
-.vs{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;padding:22px 18px 8px;text-align:center}
-.team{font-family:var(--display);font-weight:400;font-size:clamp(28px,5vw,48px);line-height:1;color:var(--mustard)}
-.team.k{color:#8fd0c9}
-.team small{display:block;font-family:var(--body);font-size:14px;font-weight:600;color:var(--paper);opacity:.8;margin-top:8px}
-.v{font-family:var(--display);font-size:30px;color:var(--rust);background:var(--paper);border:3px solid var(--mustard);border-radius:50%;
-  width:64px;height:64px;display:grid;place-items:center;transform:rotate(-8deg)}
+.ann{text-align:center;margin:20px 0 0;font-family:var(--mono);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mustard);font-size:14px}
+.ann-h{text-align:center;font-family:var(--display);font-weight:400;font-size:clamp(46px,9vw,92px);line-height:1;color:var(--rust);text-shadow:4px 4px 0 #000;margin:4px 0 0}
+.ann-h small{display:block;font-family:var(--body);font-weight:600;font-size:16px;color:var(--paper);text-shadow:none;opacity:.85;margin-top:8px;letter-spacing:.08em;text-transform:uppercase}
+.trio{list-style:none;margin:14px auto 10px;padding:0 18px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:820px}
+.trio li{background:var(--paper);color:var(--ink);border:3px solid var(--mustard);border-radius:14px;padding:12px 8px;text-align:center;display:grid;gap:4px}
+.trio .nm{font-family:var(--display);font-size:clamp(22px,3.6vw,32px);line-height:1.05;color:var(--teal)}
+.trio .od{font-family:var(--mono);font-weight:700;font-size:18px;background:var(--ink);color:var(--mustard);border-radius:6px;padding:1px 8px;justify-self:center}
+.trio .tg{font-size:13px;color:var(--muted);font-weight:600}
 .fx-blurb{text-align:center;max-width:60ch;margin:4px auto 16px;padding:0 18px;font-size:15.5px;opacity:.92}
 .fx-mk{display:grid;gap:14px;padding:0 18px 18px}
-.fx-mk .mkt{box-shadow:4px 4px 0 var(--mustard)}
+.fx-mk .mkt{box-shadow:4px 4px 0 var(--mustard);color:var(--ink)}
 
 /* main */
 main{max-width:1180px;margin:0 auto;padding:28px 20px 40px;display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
@@ -177,8 +179,7 @@ footer{background:var(--ink);color:var(--paper);padding:28px 20px 40px}
   .sun{width:160px;height:160px}
 }
 @media (max-width:560px){
-  .vs{grid-template-columns:1fr;gap:8px}
-  .v{margin:0 auto;width:52px;height:52px;font-size:24px}
+  .trio{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){
   .smoke,.ticker div{animation:none}
@@ -233,13 +234,15 @@ footer{background:var(--ink);color:var(--paper);padding:28px 20px 40px}
 
 <section class="feature" id="today" aria-labelledby="fxh">
   <div class="fx">
-    <div class="fx-top"><span id="fxwhen">Today's Match-Up · NBL · Sun 22 Nov · 5:00pm AEDT</span><span class="live" id="fxstat">Dazza's watching on his phone</span></div>
-    <h2 class="vs" id="fxh">
-      <span class="team">Bullets<small>Brisbane · the home side</small></span>
-      <span class="v" aria-label="versus">v</span>
-      <span class="team k">Kings<small>Sydney · reigning champs</small></span>
-    </h2>
-    <p class="fx-blurb">Brisbane Entertainment Centre. Dazza's driving up from Nimbin for it, which is about four hours, or eleven the way he goes. Spud's watching on the telly at the servo with the sound off and making up the commentary.</p>
+    <div class="fx-top"><span>Today's Match-Up · Barefoot Bowls · Sun 22 Nov</span><span class="live" id="fxstat">Taking bets now</span></div>
+    <p class="ann">📣 Announcement</p>
+    <h2 class="ann-h" id="fxh">A Jack Off<small>featuring</small></h2>
+    <ul class="trio">
+      <li><span class="nm">Bruce</span><span class="od">$12.00</span><span class="tg">The roughie</span></li>
+      <li><span class="nm">The Dogg</span><span class="od">$2.00</span><span class="tg">Co-favourite</span></li>
+      <li><span class="nm">The Wookie</span><span class="od">$2.10</span><span class="tg">Co-favourite</span></li>
+    </ul>
+    <p class="fx-blurb">Closest bowl to the jack takes it. Dazza's on the scoreboard, Spud's holding the tape measure upside down. Bruce is a long shot. The Dogg and The Wookie are near enough dead even, and they both know it.</p>
     <div class="fx-mk" id="fxmk"></div>
   </div>
 </section>
@@ -324,14 +327,14 @@ footer{background:var(--ink);color:var(--paper);padding:28px 20px 40px}
 
 <script>
 const MARKETS = [
-  {id:"fx-h2h", f:1, q:"Head to head: who wins?", sub:"Kings flogged the Bullets earlier this month. Dazza reckons that means the Bullets are 'due'. That's not how it works.", unit:"Measured in: vibes",
-   outs:[["Bullets",3.40],["Kings",1.35],["A draw (it's basketball, mate)",51.00],["Dazza leaves at half-time for a pie",2.20]]},
-  {id:"fx-dunk", f:1, q:"Will Spud do a 'dunk' off the Kombi bumper at full time?", sub:"Milk crate for a hoop. He's 5'7\" on a good day and it's not a good day.", unit:"Measured in: centimetres of air",
-   outs:[["Gets up, gets the crate",6.50],["Bumper only, no lift",1.70],["Ankle, again",2.10],["Asleep before full time",3.00]]},
-  {id:"fx-hat", f:1, q:"Does Dazza wear the bucket hat inside the arena?", sub:"Usher has already asked him once in the car park, which isn't even the arena.", unit:"Measured in: hats",
-   outs:[["Never comes off",1.25],["Swapped for a Kings cap he 'found'",4.50],["Confiscated at the gate",3.80]]},
-  {id:"fx-snack", f:1, q:"First thing Dazza buys at the canteen", sub:"Budget: one $20 note he's had since Easter.", unit:"Measured in: snacks",
-   outs:[["Hot chips, chicken salt",1.60],["Three Chiko Rolls",3.20],["A foam finger he can't afford",5.50],["Queues for an hour, buys a water",4.00]]},
+  {id:"fx-jack", f:1, q:"The Jack Off: who finishes closest to the jack?", sub:"One end, one bowl each. Measured by Spud, who has never once read a tape measure the right way up.", unit:"Measured in: centimetres off",
+   outs:[["Bruce",12.00],["The Dogg",2.00],["The Wookie",2.10]]},
+  {id:"fx-touch", f:1, q:"Does anyone actually touch the jack?", sub:"A toucher, for the uninitiated. Dazza swears he's seen one before.", unit:"Measured in: kisses",
+   outs:[["Nobody gets near it",1.60],["One toucher",3.50],["Bruce somehow",15.00],["Someone knocks it in the ditch",4.00]]},
+  {id:"fx-margin", f:1, q:"Winning margin between The Dogg and The Wookie", sub:"If it's those two, Spud reckons it'll come down to a cigarette paper.", unit:"Measured in: Rizla papers",
+   outs:[["Under one Rizla",2.80],["A schooner coaster",2.40],["A full bowl's width",3.60],["They dispute it till close",3.00]]},
+  {id:"fx-bruce", f:1, q:"Bruce's excuse if he loses", sub:"Long odds on the win, short odds on the excuse.", unit:"Measured in: excuses",
+   outs:[["The green's crooked",1.80],["Sun in his eyes",2.50],["Bowl's got a dodgy bias",2.20],["Says he wasn't trying",3.40]]},
   {id:"shark", q:"What does shark actually taste like?", sub:"Dazza had flake at the Byron chippy and has opinions.", unit:"Measured in: vibes",
    outs:[["Chicken",3.50],["Fish, obviously",1.80],["Regret",7.00],["Depends on the shark",2.20],["A really big flathead",4.20]]},
   {id:"moon", q:"How big is the moon tonight?", sub:"Measured by Spud holding up a pizza at arm's length from the van roof.", unit:"Measured in: pizzas",
@@ -369,8 +372,8 @@ const VOIDS = [
   "Spud got distracted by a really good stick. Market voided, stakes refunded."
 ];
 const TICKS = [
-  "TODAY: BULLETS v KINGS, 5PM. Dazza's taken the bucket hat",
-  "LATE MAIL: Spud's practising dunks on a milk crate",
+  "TODAY: THE JACK OFF. Bruce $12, The Dogg $2, The Wookie $2.10",
+  "LATE MAIL: The Wookie seen polishing his bowl in the car park",
   "DAZZA'S TIP: The moon is massive tonight, put the house on it",
   "LATE MAIL: Spud's tea bag spotted in the mug since Sunday",
   "SCRATCHING: Dazza's thongs, location unknown",
@@ -457,13 +460,7 @@ function onPick(e){
 $("mk").addEventListener("click", onPick);
 $("fxmk").addEventListener("click", onPick);
 
-// Featured match status: tip-off Sun 22 Nov 2026, 5:00pm AEDT
-(function(){
-  const tip = Date.parse("2026-11-22T17:00:00+11:00"), now = Date.now(), h = 3600e3;
-  $("fxstat").textContent = now < tip ? "Tip-off 5pm. Dazza's still in the car"
-    : now < tip + 2.5*h ? "Live-ish. Spud's on the servo telly"
-    : "Full time. Spud's still deciding";
-})();
+
 $("lines").addEventListener("input", e=>{
   const k = e.target.dataset.k; if(!k) return;
   const v = Math.max(0, Math.floor(+e.target.value||0));
